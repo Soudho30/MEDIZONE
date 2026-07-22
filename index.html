@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEDIZONE - Online Medical Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-3" href="#">
+                <i class="fas fa-heartbeat text-white me-2"></i>MEDIZONE
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbarMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavbarMenu">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link active px-3" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="#shop-anchor">Medicines</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="#policy-section">Policies</a></li>
+                    <li class="nav-item">
+                        <button class="btn btn-warning btn-sm rounded-pill px-3 fw-semibold text-dark me-2" data-bs-toggle="modal" data-bs-target="#objectionModal">
+                            <i class="fas fa-exclamation-circle me-1"></i> File Objection
+                        </button>
+                    </li>
+                    <li class="nav-item px-2">
+                        <button class="btn btn-light rounded-circle position-relative custom-cart-trigger d-flex align-items-center justify-content-center shadow-sm" data-bs-toggle="modal" data-bs-target="#cartModal">
+                            <i class="fas fa-shopping-cart text-primary"></i>
+                            <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-light">0</span>
+                        </button>
+                    </li>
+                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                        <a class="btn btn-outline-light btn-sm px-4 rounded-pill fw-medium" href="login.html"><i class="fas fa-sign-out-alt me-1"></i>Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <header class="hero-section text-center text-white d-flex align-items-center mb-5">
+        <div class="container">
+            <span class="badge bg-light text-primary mb-3 px-3 py-2 fw-semibold text-uppercase tracking-wider">Certified Healthcare Provider</span>
+            <h1 class="display-4 fw-bold mb-2">Your Trusted Pharmacy, Online.</h1>
+            <p class="lead mb-4 opacity-90">Access authentic medications, skincare treatments, and essential baby products with standard delivery across Bangladesh.</p>
+            <div class="row justify-content-center mt-2">
+                <div class="col-lg-7 col-md-9 px-4">
+                    <div class="input-group input-group-lg bg-white rounded-pill overflow-hidden p-1 shadow-lg border-0">
+                        <span class="input-group-text bg-white border-0 text-muted ps-4"><i class="fas fa-search"></i></span>
+                        <input type="text" id="catalogSearch" class="form-control border-0 bg-white text-dark focus-none py-3" placeholder="Search medicines, skincare, baby brands..." onkeyup="searchInventory()">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="container my-5" id="shop-anchor">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold text-dark section-title position-relative d-inline-block pb-2">Browse Categories</h2>
+            <p class="text-muted small">Filter through our wide selection of authentic healthcare solutions</p>
+        </div>
+        <div class="category-scrollbar-wrapper mb-5">
+            <div class="d-flex justify-content-md-center justify-content-start gap-2 pb-2 overflow-x-auto no-scrollbar">
+                <button class="btn btn-outline-primary rounded-pill px-4 py-2 filter-btn active" onclick="filterMedicines('all', this)"><i class="fas fa-th-large me-2"></i>All Products</button>
+                <button class="btn btn-outline-primary rounded-pill px-4 py-2 filter-btn" onclick="filterMedicines('Painkillers', this)"><i class="fas fa-pills me-2"></i>Pain Relief</button>
+                <button class="btn btn-outline-primary rounded-pill px-4 py-2 filter-btn" onclick="filterMedicines('Antibiotics', this)"><i class="fas fa-prescription-bottle-alt me-2"></i>Antibiotics</button>
+                <button class="btn btn-outline-primary rounded-pill px-4 py-2 filter-btn" onclick="filterMedicines('Vitamins', this)"><i class="fas fa-apple-alt me-2"></i>Vitamins</button>
+                <button class="btn btn-outline-primary rounded-pill px-4 py-2 filter-btn" onclick="filterMedicines('BP', this)"><i class="fas fa-heartbeat me-2"></i>BP Control</button>
+                <button class="btn btn-outline-primary rounded-pill px-4 py-2 filter-btn" onclick="filterMedicines('Skin Care', this)"><i class="fas fa-pump-medical me-2"></i>Skin Care</button>
+                <button class="btn btn-outline-primary rounded-pill px-4 py-2 filter-btn" onclick="filterMedicines('Baby Care', this)"><i class="fas fa-baby me-2"></i>Baby Care</button>
+            </div>
+        </div>
+        <div class="row g-4 justify-content-center mb-5" id="medicine-grid">
+        </div>
+    </main>
+    <section class="bg-white py-5 border-top border-bottom" id="policy-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold text-dark section-title position-relative d-inline-block pb-2">Pharmacy Policies</h2>
+                <p class="text-muted small">Transparency and safety standards for our valued customers</p>
+            </div> 
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 p-4 shadow-sm rounded-4 text-center">
+                        <div class="policy-icon text-primary mb-3">
+                            <i class="fas fa-undo-alt fs-1"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Return & Refund Policy</h5>
+                        <p class="text-muted small mb-0">Unopened and undamaged items can be returned within 7 days of delivery. Refrigerated or prescribed medications are non-refundable for health safety.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 p-4 shadow-sm rounded-4 text-center">
+                        <div class="policy-icon text-primary mb-3">
+                            <i class="fas fa-file-prescription fs-1"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Prescription Policy</h5>
+                        <p class="text-muted small mb-0">Prescription-only drugs require a valid prescription uploaded at checkout or shared with our licensed pharmacist team before order dispatch.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 p-4 shadow-sm rounded-4 text-center">
+                        <div class="policy-icon text-primary mb-3">
+                            <i class="fas fa-truck-medical fs-1"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Safe Delivery Policy</h5>
+                        <p class="text-muted small mb-0">All packages are sealed and temperature-monitored. Deliveries take 24–48 hours across Bangladesh with free home delivery on all standard orders.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" id="objectionModal" tabindex="-1" aria-labelledby="objectionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header bg-warning text-dark p-4">
+                    <h5 class="modal-title fw-bold" id="objectionModalLabel"><i class="fas fa-exclamation-triangle me-2"></i>File an Objection / Complaint</h5>
+                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="objectionForm" onsubmit="handleObjectionSubmission(event)">
+                    <div class="modal-body p-4">
+                        <p class="text-muted small mb-3">Please provide the details of your complaint or issue. Our support team will investigate and respond within 24 hours.</p>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold text-dark small">Order ID (Optional)</label>
+                            <input type="text" class="form-control form-control-sm border" id="objOrderId" placeholder="e.g., #MZ-10294">
+                        </div>          
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold text-dark small">Objection Category</label>
+                            <select class="form-select form-select-sm border" id="objCategory" required>
+                                <option value="" selected disabled>Select a reason...</option>
+                                <option value="Damaged Product">Damaged or Expired Product</option>
+                                <option value="Wrong Item Delivered">Wrong Item Delivered</option>
+                                <option value="Delivery Delay">Delivery Delay</option>
+                                <option value="Payment Issue">Payment or Pricing Issue</option>
+                                <option value="Other">Other Issues</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold text-dark small">Detailed Description</label>
+                            <textarea class="form-control form-control-sm border" id="objDescription" rows="4" placeholder="Explain your objection in detail..." required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 p-4 pt-0">
+                        <button type="button" class="btn btn-light rounded-3 px-4 py-2 text-muted fw-medium" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-warning rounded-3 px-4 py-2 text-dark fw-semibold">Submit Objection</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="chat-widget-wrapper">
+        <button class="chat-toggle-btn shadow-lg position-relative" id="chatToggleBtn" onclick="toggleChatWindow()">
+            <i class="fas fa-headset fs-3" id="chatIcon"></i>
+            <span class="position-absolute top-0 start-100 translate-middle p-2 bg-success border border-light rounded-circle chat-online-badge"></span>
+        </button>
+        <div class="chat-window card shadow-2xl border-0 rounded-4 d-none" id="chatWindow">
+            <div class="chat-header bg-primary text-white p-3 rounded-top-4 d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="position-relative">
+                        <div class="ai-avatar-badge bg-white text-primary rounded-circle d-flex align-items-center justify-content-center fw-bold">
+                            <i class="fas fa-user-nurse"></i>
+                        </div>
+                        <span class="position-absolute bottom-0 start-100 translate-middle p-1 bg-success border border-light rounded-circle"></span>
+                    </div>
+                    <div>
+                        <h6 class="mb-0 fw-bold">MediBot Care AI</h6>
+                        <small class="opacity-75" style="font-size: 11px;">Powered by Voice & Medical AI</small>
+                    </div>
+                </div>
+                <button class="btn-close btn-close-white btn-sm shadow-none" onclick="toggleChatWindow()"></button>
+            </div>
+            <div class="chat-body p-3 no-scrollbar" id="chatBody">
+                <div class="chat-message bot mb-3">
+                    <div class="msg-content bg-light p-2 px-3 rounded-3 text-dark small shadow-sm">
+                        Hello! 🩺 I am <strong>MediBot Care AI</strong>. Type a query or tap the <strong>Microphone button</strong> to speak with me!
+                    </div>
+                </div>
+            </div>
+            <div class="px-2 py-1 bg-light border-top d-flex gap-1 overflow-x-auto no-scrollbar" id="quickPrompts">
+                <button class="btn btn-xs btn-outline-primary rounded-pill text-nowrap py-1 px-2" style="font-size: 10px;" onclick="sendQuickPrompt('Suggest something for fever')">🤒 Fever Relief</button>
+                <button class="btn btn-xs btn-outline-primary rounded-pill text-nowrap py-1 px-2" style="font-size: 10px;" onclick="sendQuickPrompt('How do I pay with bKash?')">📱 bKash Payment</button>
+                <button class="btn btn-xs btn-outline-primary rounded-pill text-nowrap py-1 px-2" style="font-size: 10px;" onclick="sendQuickPrompt('What skincare products do you have?')">✨ Skincare</button>
+            </div>
+            <div class="chat-footer p-2 border-top bg-white rounded-bottom-4">
+                <form id="chatForm" onsubmit="handleUserMessage(event)" class="d-flex gap-1 align-items-center">
+                    <input type="text" id="chatInput" class="form-control form-control-sm border-0 focus-none bg-light rounded-pill px-3 py-2" placeholder="Type or speak..." required autocomplete="off">
+                    <button type="button" id="voiceBtn" class="btn btn-outline-secondary btn-sm rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" onclick="startVoiceRecognition()" title="Voice Command">
+                        <i class="fas fa-microphone" id="voiceIcon"></i>
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-sm rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                        <i class="fas fa-paper-plane text-white" style="font-size: 12px;"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade custom-modal" id="cartModal" tabindex="-1" aria-labelledby="cartModalHeader" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content border-0 shadow-2xl rounded-4">
+                <div class="modal-header bg-primary text-white p-4">
+                    <h5 class="modal-title fw-bold d-flex align-items-center" id="cartModalHeader">
+                        <i class="fas fa-shopping-basket me-3 fs-4"></i>Your Shopping Cart
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div id="cart-items" class="list-group mb-3 max-height-cart no-scrollbar"></div>
+                    <div class="checkout-summary border-top pt-3 mt-3">
+                        <div class="d-flex justify-content-between align-items-center text-muted small mb-1">
+                            <span>Est. Delivery Fees</span>
+                            <span class="text-success fw-medium">FREE</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center text-dark fw-bold fs-4">
+                            <span>Total Due:</span>
+                            <span id="cart-total" class="text-primary">৳ 0.00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 p-4 pt-0 d-flex gap-2">
+                    <button type="button" class="btn btn-light rounded-3 px-4 py-2 text-muted fw-medium flex-grow-1" data-bs-dismiss="modal">Continue Browsing</button>
+                    <button type="button" class="btn btn-primary btn-custom rounded-3 px-4 py-2 fw-medium flex-grow-1" onclick="executeCheckoutSequence()">Secure Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
